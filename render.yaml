@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: yuni-form-training
+    name: trainwithform
     runtime: static
     buildCommand: "true"
     staticPublishPath: ./public
