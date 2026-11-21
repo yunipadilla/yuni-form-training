@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: yuni-form-training
+    runtime: static
+    buildCommand: "true"
+    staticPublishPath: ./public
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
