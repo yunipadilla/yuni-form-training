@@ -1,6 +1,6 @@
 # FORM — Yuni’s Training Journal
 
-A static workout website with the current three-week trainer program, Wednesday bike/swim options, Friday speed-run or generated-swim choices, workout logging, recipes, and calendar-month analytics.
+A static workout website with the current three-week trainer program, Wednesday bike/swim options, Friday speed-run or generated-swim choices, workout logging, optional Sunday shoulder/lower-back mobility, recipes, and calendar-month analytics.
 
 ## Render
 
