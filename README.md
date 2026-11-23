@@ -22,3 +22,9 @@ Serve the `public` folder with any static HTTP server.
 Edit app files in `src/`. Run `node scripts/package.mjs` and supply the existing password on stdin to regenerate the encrypted `public/vault.json`. Do not put the password in the repository or build logs. Keep the published salt stable across updates so an existing 24-hour session remains valid. Serve only `public/`, which contains the entry page, access controller, styling, and encrypted payload. Render continues serving the checked-in package with build command `true`.
 
 The monthly journal is included in Export backup / Import backup. Habits and insights are isolated by calendar month; a new month copies the most recent earlier month’s visible habits without copying checkoffs or reflections. Days are numbered high to low. Future habit checkoffs are disabled, while highlights can be written ahead. Hiding a habit preserves its existing entries.
+
+## Notebook and sleep
+
+The graph-paper notebook uses compact numbered rows, a highlights column, vertical habit headings, and a day-aligned sleep constellation. Its default habits are Reading my Bible, Movement, 80 oz of water daily, Shoulder rehab, Prayer, Reading, and Nutrition. Existing current/future months receive this preset once, retaining matching habit IDs and completions; unused starter habits remain hidden. Historical months and customized habits are preserved. Later edits are copied into newly created months.
+
+Sleep is manual entry, with no Oura API connection. A row represents the morning of waking: Oura score (whole number 0–100) and previous-night hours (0–24). Each logged hours value becomes a star aligned to that row; only consecutive recorded nights connect. Missing hours remain gaps. The horizontal hours scale expands above 12 if needed. Monthly averages use actual recorded values, including zero, and exclude missing and future entries. Sleep values are included in the existing backup / restore flow.
