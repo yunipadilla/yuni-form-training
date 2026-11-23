@@ -1,5 +1,5 @@
 import {readFile,writeFile,readdir,mkdir} from 'node:fs/promises';
-import {webcrypto} from 'node:crypto';
+import {webcrypto,createHash} from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 // Password is supplied on stdin, never committed or written to a build log.
@@ -17,4 +17,13 @@ const key=await webcrypto.subtle.deriveKey({name:'PBKDF2',salt,iterations,hash:'
 const encrypted=await webcrypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(html));
 await mkdir(path.join(root,'public'),{recursive:true});
 await writeFile(path.join(root,'public/vault.json'),JSON.stringify({version:1,iterations,salt:Buffer.from(salt).toString('base64'),iv:Buffer.from(iv).toString('base64'),content:Buffer.from(encrypted).toString('base64')}));
-console.log('Packaged encrypted FORM app. No password written to output.');
+const revision=createHash('sha256').update(new Uint8Array(encrypted)).digest('hex').slice(0,16);
+const accessPath=path.join(root,'public/access.js');
+let access=await readFile(accessPath,'utf8');
+access=access.replace(/fetch\('vault\.json(?:\?v=[^']*)?'/,`fetch('vault.json?v=${revision}'`);
+await writeFile(accessPath,access);
+const entryPath=path.join(root,'public/index.html');
+let entry=await readFile(entryPath,'utf8');
+entry=entry.replace(/access\.js\?v=[^" ]+/,`access.js?v=${revision}`);
+await writeFile(entryPath,entry);
+console.log('Packaged encrypted FORM app with versioned access assets. No password written to output.');

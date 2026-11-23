@@ -8,7 +8,7 @@
  function valid(s,now=Date.now()){return s&&typeof s.key==='string'&&typeof s.salt==='string'&&Number.isFinite(s.issuedAt)&&s.issuedAt<=now&&s.expiresAt===s.issuedAt+TTL&&now<s.expiresAt}
  function remove(){for(const storage of ['localStorage','sessionStorage']){try{window[storage].removeItem(SESSION)}catch{}}}
  function lock(){remove();document.documentElement.style.visibility='hidden';location.reload()}
- function readVault(){return vaultPromise??=fetch('vault.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('load');return r.json()}).catch(e=>{vaultPromise=null;throw e})}
+ function readVault(){return vaultPromise??=fetch('vault.json?v=0fcaf8ef14008f43',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('load');return r.json()}).catch(e=>{vaultPromise=null;throw e})}
  async function decrypt(raw,v){const key=await crypto.subtle.importKey('raw',raw,'AES-GCM',false,['decrypt']);return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:decode(v.iv)},key,decode(v.content)))}
  function watch(){
   const verify=()=>{if(checking)return;checking=true;if(!valid(session)){lock();return}const s=stored();if(session.persisted&&(!s||s.expiresAt!==session.expiresAt||s.key!==session.key)){lock();return}checking=false};
