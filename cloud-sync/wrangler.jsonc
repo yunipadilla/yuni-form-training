@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "form-journal-sync",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-23",
+  "workers_dev": true,
+  "observability": {
+    "enabled": false
+  },
+  "vars": {
+    "ALLOWED_ORIGINS": "https://trainwithform.onrender.com"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "form-journal-sync",
+      "database_id": "73d59231-19a1-43e3-9e08-f8e8f58fd99b"
+    }
+  ],
+  "account_id": "26dbe31f4bb2496c0916938d85def1da"
+}
