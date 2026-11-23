@@ -10,8 +10,9 @@ function openJournalLibrary(){page='journal';activeDay=null;journalScreen='libra
 function restoreJournalPageRoute(repaint=false){
  const hash=window.location?.hash||'',match=hash.match(/^#journal\/(\d{4}-\d{2})$/);
  if(match&&validJournalMonth(match[1])){page='journal';journalMonth=match[1];journalScreen='month';activeDay=null}
+ else if(hash==='#recipes'){page='training';activeDay=null;window.history?.replaceState?.(null,'','#training')}
  else if(hash==='#journal'){page='journal';journalScreen='library';activeDay=null}
- else if(['#training','#analytics','#history','#recipes'].includes(hash)){page=hash.slice(1);activeDay=null}
+ else if(['#training','#analytics','#history'].includes(hash)){page=hash.slice(1);activeDay=null}
  else return;
  if(repaint)render();
 }
