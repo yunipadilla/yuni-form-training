@@ -20,6 +20,7 @@ function validHabitJournal(j){
 }
 function getJournalMonth(k=journalMonth){
  state.habitJournal??={version:1,months:{}};
+ if(state.habitJournal.dayOrderRevision!=='ascending-v1'){state.habitJournal.dayOrder='ascending';state.habitJournal.dayOrderRevision='ascending-v1';save()}
  if(!state.habitJournal.months[k]){
   const prior=Object.keys(state.habitJournal.months).filter(m=>m<k).sort().at(-1);
   const habits=prior?state.habitJournal.months[prior].habits.filter(h=>h.active).map(h=>({...h})):JOURNAL_DEFAULTS.map(name=>({id:uid(),name,active:true}));
@@ -27,7 +28,7 @@ function getJournalMonth(k=journalMonth){
  }
  const m=state.habitJournal.months[k];if(k>=localDate(new Date()).slice(0,7)&&m.habitPreset!==PERSONAL_HABIT_PRESET){personalizeHabits(m);save()}return m;
 }
-function journalDayOrder(){return state.habitJournal?.dayOrder==='ascending'?'ascending':'descending'}
+function journalDayOrder(){return state.habitJournal?.dayOrder==='descending'?'descending':'ascending'}
 function journalDayList(k=journalMonth){const length=journalDayCount(k);return Array.from({length},(_,i)=>journalDayOrder()==='ascending'?i+1:length-i)}
 function journalRowIndex(n,k=journalMonth){return journalDayOrder()==='ascending'?n-1:journalDayCount(k)-n}
 function journalEntry(n){const m=getJournalMonth(),k=String(n).padStart(2,'0');return m.days[k]??(m.days[k]={insight:'',done:{}})}
