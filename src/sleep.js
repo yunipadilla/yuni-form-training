@@ -14,9 +14,9 @@ function sleepSummaryPanel(m){return `<section class="sleep-summary" aria-label=
 function sleepSummaryMetrics(m){const s=sleepMonthlyStats(m);return `<div><strong>${s.averageScore===null?'—':Math.round(s.averageScore)}<small>/ 100</small></strong><span>Average Oura score${s.scoreNights?' · '+s.scoreNights+' nights':''}</span></div><div><strong>${s.averageHours===null?'—':s.averageHours.toFixed(1)}<small>hrs</small></strong><span>Average sleep${s.nights?' · '+s.nights+' nights':''}</span></div><div><strong>${s.nights}</strong><span>Nights with hours logged</span></div>`}
 function sleepRowFields(n,entry,future,label){return `<td class="sleep-col"><input type="number" min="0" max="100" step="1" inputmode="numeric" data-sleep="ouraScore" data-sleep-day="${n}" aria-label="Oura sleep score for ${esc(label)}" value="${entry?.ouraScore??''}" placeholder="—" ${future?'disabled':''}></td><td class="sleep-col"><input type="number" min="0" max="24" step="0.01" inputmode="decimal" data-sleep="sleepHours" data-sleep-day="${n}" aria-label="Previous night sleep hours for ${esc(label)}" value="${entry?.sleepHours??''}" placeholder="—" ${future?'disabled':''}></td>`}
 function sleepPlotData(m=getJournalMonth()){
- const count=journalDayCount(journalMonth),nights=sleepNights(m).filter(n=>typeof n.hours==='number').sort((a,b)=>b.day-a.day),max=Math.max(12,...nights.map(n=>Math.ceil(n.hours/2)*2));
- const points=nights.map(n=>({...n,x:12+n.hours/max*156,y:(count-n.day)*36+18}));
- const segments=points.slice(1).filter((p,i)=>points[i].day-p.day===1).map(p=>{const i=points.indexOf(p);return [points[i-1],p]});
+ const count=journalDayCount(journalMonth),nights=sleepNights(m).filter(n=>typeof n.hours==='number').sort((a,b)=>journalDayOrder()==='ascending'?a.day-b.day:b.day-a.day),max=Math.max(12,...nights.map(n=>Math.ceil(n.hours/2)*2));
+ const points=nights.map(n=>({...n,x:12+n.hours/max*156,y:journalRowIndex(n.day)*36+18}));
+ const segments=points.slice(1).filter((p,i)=>Math.abs(points[i].day-p.day)===1).map(p=>{const i=points.indexOf(p);return [points[i-1],p]});
  return {count,max,points,segments};
 }
 function sleepConstellation(m){
